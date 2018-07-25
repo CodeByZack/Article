@@ -98,6 +98,7 @@ public class DataUtils {
             text = text.replace("</p>","\n");
             text = text.replaceAll("<.*?>","");
             text = text.replace(" ","");
+            text = text.substring(0,text.length()-1);
             //return context_html;
             return new ArticleBean(author,title,text);
         } catch (IOException e) {

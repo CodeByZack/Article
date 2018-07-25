@@ -1,6 +1,7 @@
 package com.zack.article.Anim;
 
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -42,5 +43,14 @@ public class AnimTool {
         }else{
             v.clearAnimation();
         }
+    }
+
+    public static void startAlpha(View v){
+        Animation alpha = AnimationUtils.loadAnimation(v.getContext(), R.anim.alpha);
+        v.startAnimation(alpha);
+    }
+
+    public static void startAlphaOut(View v){
+        v.startAnimation(AnimationUtils.loadAnimation(v.getContext(),R.anim.alpha_out));
     }
 }
