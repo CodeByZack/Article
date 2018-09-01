@@ -6,11 +6,14 @@ import android.util.Log;
 import com.vise.log.ViseLog;
 import com.vise.log.inner.LogcatTree;
 
+import cn.bmob.v3.Bmob;
+
 public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
         initLog();
+        Bmob.initialize(this, "818f8d7565f7588990922e937dd3e7c8");
     }
 
     private void initLog() {

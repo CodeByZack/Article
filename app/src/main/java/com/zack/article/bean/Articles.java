@@ -1,17 +1,17 @@
 package com.zack.article.bean;
 
+import cn.bmob.v3.BmobObject;
+
 /**
  * Created by Zackv on 2017/10/8.
  */
 
-public class ArticleBean {
+public class Articles extends BmobObject{
     private String author;
-    private String time;
-    private String id;
     private String title;
     private String content;
 
-    public ArticleBean(String author, String title, String content) {
+    public Articles(String author, String title, String content) {
         this.author = author;
         this.content = content;
         this.title = title;
@@ -23,22 +23,6 @@ public class ArticleBean {
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public String getTime() {
-        return this.time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitle() {

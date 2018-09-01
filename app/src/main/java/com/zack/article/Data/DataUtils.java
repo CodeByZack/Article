@@ -1,11 +1,22 @@
 package com.zack.article.Data;
 
-import com.zack.article.bean.ArticleBean;
+import android.util.Log;
+import android.webkit.WebView;
+
+import com.vise.log.ViseLog;
+import com.zack.article.bean.Articles;
+import com.zack.article.utils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
+import cn.bmob.v3.listener.FindListener;
 
 /**
  * Created by Zackv on 2017/10/8.
@@ -16,7 +27,7 @@ public class DataUtils {
     public static String TODAYURL = "http://meiriyiwen.com";
     public static String RANDOMURL = "http://meiriyiwen.com/random";
 
-    public static ArticleBean getArticle(){
+    public static Articles getArticle(){
 
         String author = "zack";
         String title = "你好，陌生人";
@@ -49,10 +60,10 @@ public class DataUtils {
                 "    呵呵，其实我们还是挺喜欢牛的，如果它后来不偷吃我家储存在门楣上的芹菜和大葱的话。──放那么高，亏它也能够得着！我妈气得要死，那天几乎围着库尔图把那头牛撵了一大圈。回家后我们就只好吃咸菜炖土豆。从那以后，那头牛就经常来，长时间翘首往我们家门上观望。可惜再没有这样的好事了。但它还是每天都来，一直守株待兔到春天为止。我们谁都没想到绿色食品如此强烈地刺激了它的记忆──第二年冬天它还来，还那样吓人地仰着脖子往我家门楣上看。";
 
 
-        return new ArticleBean(author,title,content);
+        return new Articles(author,title,content);
     }
 
-    public  static ArticleBean getArticleToday() throws IOException {
+    public  static Articles getArticleToday() throws IOException {
         // 从 URL 直接加载 HTML 文档
         Document doc2=null;
 
@@ -73,10 +84,10 @@ public class DataUtils {
         text = text.replace("</div>","");
         text = text.replaceAll("<.*?>","");
         //return context_html;
-        return new ArticleBean(author,title,text);
+        return new Articles(author,title,text);
     }
 
-    public static ArticleBean getArticleRandom(){
+    public static Articles getArticleRandom(){
         // 从 URL 直接加载 HTML 文档
         Document doc2=null;
         try {
@@ -100,11 +111,33 @@ public class DataUtils {
             text = text.replace(" ","");
             text = text.substring(0,text.length()-1);
             //return context_html;
-            return new ArticleBean(author,title,text);
+            return new Articles(author,title,text);
         } catch (IOException e) {
             e.printStackTrace();
         }
             return null;
+    }
+
+
+
+
+    public static void getTodayArticle(FindListener listener){
+        BmobQuery<Articles> query = new BmobQuery<Articles>();
+        query.setLimit(1);
+        query.findObjects(listener);
+    }
+
+    public static void getRandomArticle(final FindListener listener){
+        final BmobQuery<Articles> query = new BmobQuery<Articles>();
+        query.count(Articles.class, new CountListener() {
+            @Override
+            public void done(Integer integer, BmobException e) {
+                ViseLog.d(integer);
+                int skip = utils.randomNum(0,integer);
+                query.setSkip(skip);
+                query.findObjects(listener);
+            }
+        });
     }
 
 }

@@ -8,23 +8,39 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+<<<<<<< Updated upstream
 import android.widget.LinearLayout;
+=======
+>>>>>>> Stashed changes
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vise.log.ViseLog;
 import com.zack.article.Anim.AnimTool;
-import com.zack.article.bean.ArticleBean;
+import com.zack.article.bean.Articles;
 import com.zack.article.Data.DataUtils;
 import com.zack.article.R;
 
+<<<<<<< Updated upstream
 import static android.view.View.FOCUS_UP;
+=======
+import java.io.IOException;
+import java.util.List;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+>>>>>>> Stashed changes
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView title;
     private TextView author;
     private TextView content;
+<<<<<<< Updated upstream
     private TextView count;
+=======
+    private ScrollView scrollView;
+>>>>>>> Stashed changes
     private DrawerLayout drawerLayout;
     private ImageView refresh,like,menu;
     private ScrollView scrollView;
@@ -40,30 +56,59 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void reuqestData() {
-        new Thread(){
+//        new Thread(){
+//            @Override
+//            public void run() {
+//                super.run();
+//                final Articles articleBean = DataUtils.getArticleRandom();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        upDateView(articleBean);
+//                    }
+//                });
+//            }
+//        }.start();
+
+        DataUtils.getTodayArticle(new FindListener<Articles>() {
             @Override
-            public void run() {
-                super.run();
-                final ArticleBean articleBean = DataUtils.getArticleRandom();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        upDateView(articleBean);
-                    }
-                });
+            public void done(List<Articles> list, BmobException e) {
+                if(e == null){
+                    upDateView(list.get(0));
+                }else{
+                    ViseLog.d(e);
+                }
             }
-        }.start();
+        });
     }
 
-    private void upDateView(ArticleBean article) {
+    private void reuqestRandomData() {
+        DataUtils.getRandomArticle(new FindListener<Articles>() {
+            @Override
+            public void done(List<Articles> list, BmobException e) {
+                if(e == null){
+                    upDateView(list.get(0));
+                }else{
+                    ViseLog.d(e);
+                }
+            }
+        });
+    }
+
+    private void upDateView(Articles article) {
+        Toast.makeText(this, article.getTitle(), Toast.LENGTH_SHORT).show();
         AnimTool.stopRotate(refresh);
         countFlag = false;
         title.setText(article.getTitle());
         author.setText(article.getAuthor());
         content.setText(article.getContent());
+<<<<<<< Updated upstream
         count.setText("全文完，共"+article.getContent().length()+"字");
         //scrollView.fullScroll(FOCUS_UP);
         scrollView.scrollTo(scrollView.getScrollX(),0);
+=======
+        scrollView.scrollTo(0, 0);
+>>>>>>> Stashed changes
     }
 
     private void initLogic() {
@@ -81,9 +126,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         refresh = findViewById(R.id.refresh);
         like = findViewById(R.id.like);
         menu = findViewById(R.id.menu);
+<<<<<<< Updated upstream
         count = findViewById(R.id.count);
 
         scrollView = findViewById(R.id.container);
+=======
+        scrollView = findViewById(R.id.scrollView);
+>>>>>>> Stashed changes
     }
 
     @Override
@@ -95,7 +144,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.like:
                 break;
             case R.id.refresh:
-                reuqestData();
+                reuqestRandomData();
                 showLoadingArticle();
                 break;
         }
