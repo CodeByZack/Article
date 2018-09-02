@@ -1,5 +1,7 @@
 package com.zack.article.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -15,9 +17,12 @@ import android.widget.Toast;
 
 import com.vise.log.ViseLog;
 import com.zack.article.Anim.AnimTool;
+import com.zack.article.Data.ArticleCopy;
+import com.zack.article.Data.DataBase;
 import com.zack.article.bean.Articles;
 import com.zack.article.Data.DataUtils;
 import com.zack.article.R;
+import com.zack.article.util.SPUtil;
 
 import static android.view.View.FOCUS_UP;
 import java.io.IOException;
@@ -30,12 +35,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView title;
     private TextView author;
     private TextView content;
-    private TextView count;
     private ScrollView scrollView;
+    private TextView count;
+    private TextView readedNum;
     private DrawerLayout drawerLayout;
     private ImageView refresh,like,menu;
+    private LinearLayout llCollect,llSetting,llAbout;
 
     private boolean countFlag;
+    private int nowArticleNum;
+    private Articles articles;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,13 +96,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void upDateView(Articles article) {
+        this.articles = article;
         Toast.makeText(this, article.getTitle(), Toast.LENGTH_SHORT).show();
         AnimTool.stopRotate(refresh);
         countFlag = false;
         title.setText(article.getTitle());
         author.setText(article.getAuthor());
         content.setText(article.getContent());
-        count.setText("全文完，共"+article.getContent().length()+"字");
+        nowArticleNum = article.getContent().length();
+        count.setText("全文完，共"+nowArticleNum+"字");
         //scrollView.fullScroll(FOCUS_UP);
         // scrollView.scrollTo(scrollView.getScrollX(),0);
         scrollView.scrollTo(0, 0);
@@ -102,12 +114,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         menu.setOnClickListener(this);
         refresh.setOnClickListener(this);
         like.setOnClickListener(this);
+        llSetting.setOnClickListener(this);
+        llAbout.setOnClickListener(this);
+        llCollect.setOnClickListener(this);
         scrollView.setOnTouchListener(new TouchListenerImpl());
     }
 
     private void initView() {
         title = findViewById(R.id.title);
         author = findViewById(R.id.author);
+        readedNum = findViewById(R.id.tv_readedNum);
         content = findViewById(R.id.content);
         drawerLayout = findViewById(R.id.drawer);
         refresh = findViewById(R.id.refresh);
@@ -115,6 +131,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         menu = findViewById(R.id.menu);
         count = findViewById(R.id.count);
         scrollView = findViewById(R.id.scrollView);
+        readedNum.setText("你已阅读"+DataUtils.getRededNum(MainActivity.this)+"字");
+        llAbout = findViewById(R.id.ll_about);
+        llCollect = findViewById(R.id.ll_collect);
+        llSetting = findViewById(R.id.ll_setting);
     }
 
     @Override
@@ -124,10 +144,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 drawerLayout.openDrawer(GravityCompat.END);
                 break;
             case R.id.like:
+                ArticleCopy article = new ArticleCopy();
+                article.setObjectId(articles.getObjectId());
+                article.setAuthor(articles.getAuthor());
+                article.setContent(articles.getContent());
+                article.setTitle(articles.getTitle());
+                DataBase.getInstance().articlesDao().insert(article);
+                toast("收藏成功！");
                 break;
             case R.id.refresh:
                 reuqestRandomData();
                 showLoadingArticle();
+                break;
+            case R.id.ll_about:
+                startActivity(new Intent(this,AboutActivity.class));
+                drawerLayout.closeDrawer(GravityCompat.END);
+                break;
+            case R.id.ll_collect:
+                startActivity(new Intent(this,CollectActivity.class));
+                drawerLayout.closeDrawer(GravityCompat.END);
+                break;
+            case R.id.ll_setting:
+                startActivity(new Intent(this,SettingActivity.class));
+                drawerLayout.closeDrawer(GravityCompat.END);
                 break;
         }
     }
@@ -160,14 +199,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                     break;
                 case MotionEvent.ACTION_MOVE:
-//                    int scrollY=view.getScrollY();
-//                    int height=view.getHeight();
-//                    int scrollViewMeasuredHeight=scrollView.getChildAt(0).getMeasuredHeight();
                     Rect localRect = new Rect();
                     boolean localVisibility = count.getLocalVisibleRect(localRect);
+
                     if(!countFlag && localVisibility){
                         ViseLog.d("滑动到底部事件！"+localVisibility);
                         countFlag = true;
+                        DataUtils.updateReadNum(nowArticleNum,MainActivity.this);
+                        readedNum.setText("你已阅读"+DataUtils.getRededNum(MainActivity.this)+"字");
                     }
                     break;
 

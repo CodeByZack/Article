@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    tools:openDrawer="right"
     android:id="@+id/drawer">
 
     <include layout="@layout/main_content"
@@ -12,9 +13,87 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="200dp"
-        android:background="@color/colorAccent"
+        android:background="@color/white"
         android:layout_gravity = "end"
         android:layout_height="match_parent">
+        <TextView
+            android:height="200dp"
+            android:gravity="center"
+            android:background="@color/bg_gray"
+            android:id="@+id/tv_readedNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="你已阅读xx字！"/>
+        <LinearLayout
+            android:paddingTop="@dimen/little_margin"
+            android:paddingBottom="@dimen/little_margin"
+            android:paddingLeft="@dimen/normal_margin"
+            android:id="@+id/ll_collect"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/collect"/>
+            <TextView
+                android:textSize="@dimen/text_size_medium"
+                android:paddingLeft="@dimen/normal_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="收藏"/>
+        </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:background="@color/bg_gray"/>
+        <LinearLayout
+            android:paddingTop="@dimen/little_margin"
+            android:paddingBottom="@dimen/little_margin"
+            android:paddingLeft="@dimen/normal_margin"
+            android:id="@+id/ll_setting"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/setting"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="@dimen/text_size_medium"
+                android:paddingLeft="@dimen/normal_margin"
+                android:layout_height="wrap_content"
+                android:text="设置"/>
+        </LinearLayout>
+        <View
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/bg_gray"/>
+        <LinearLayout
+            android:paddingTop="@dimen/little_margin"
+            android:paddingBottom="@dimen/little_margin"
+            android:paddingLeft="@dimen/normal_margin"
+            android:id="@+id/ll_about"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/about"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="@dimen/text_size_medium"
+                android:paddingLeft="@dimen/normal_margin"
+                android:layout_height="wrap_content"
+                android:text="关于"/>
+        </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
