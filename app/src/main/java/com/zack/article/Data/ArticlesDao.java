@@ -21,6 +21,14 @@ public interface ArticlesDao {
     List<ArticleCopy> getAllCollect();
 
     /**
+     * 查询所有
+     *
+     * @return
+     */
+    @Query("SELECT * FROM ArticleCopy WHERE objectId=:id ")
+    List<ArticleCopy> getCollectById(String id);
+
+    /**
      * 项数据库添加数据
      *
      * @param movie

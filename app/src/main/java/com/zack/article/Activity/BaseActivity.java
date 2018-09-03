@@ -1,4 +1,4 @@
-package com.zack.article.activity;
+package com.zack.article.Activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

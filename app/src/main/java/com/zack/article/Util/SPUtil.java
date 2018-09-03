@@ -1,4 +1,4 @@
-package com.zack.article.util;
+package com.zack.article.Util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

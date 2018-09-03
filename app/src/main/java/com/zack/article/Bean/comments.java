@@ -1,4 +1,4 @@
-package com.zack.article.bean;
+package com.zack.article.Bean;
 
 import cn.bmob.v3.BmobObject;
 

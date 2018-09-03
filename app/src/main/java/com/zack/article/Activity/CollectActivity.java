@@ -1,8 +1,6 @@
-package com.zack.article.activity;
+package com.zack.article.Activity;
 
-import android.arch.persistence.room.Database;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +11,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zack.article.Data.ArticleCopy;
 import com.zack.article.Data.DataBase;
+import com.zack.article.Event.OpenCollectArticleEvent;
 import com.zack.article.R;
-import com.zack.article.Data.ArticleCopy;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +42,13 @@ public class CollectActivity extends BaseActivity {
             }
         });
         collectAdapter = new CollectAdapter(R.layout.collect_item,data);
+        collectAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                EventBus.getDefault().post(new OpenCollectArticleEvent(data.get(position)));
+                finish();
+            }
+        });
         recyclerView.setAdapter(collectAdapter);
         List<ArticleCopy> a = DataBase.getInstance().articlesDao().getAllCollect();
         collectAdapter.addData(a);

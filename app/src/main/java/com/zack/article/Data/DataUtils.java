@@ -1,19 +1,11 @@
 package com.zack.article.Data;
 
 import android.content.Context;
-import android.util.Log;
-import android.webkit.WebView;
 
 import com.vise.log.ViseLog;
-import com.zack.article.bean.Articles;
-import com.zack.article.util.SPUtil;
+import com.zack.article.Bean.Articles;
+import com.zack.article.Util.SPUtil;
 import com.zack.article.utils;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.IOException;
-import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
@@ -37,6 +29,7 @@ public class DataUtils {
     }
     public static void getTodayArticle(FindListener listener){
         BmobQuery<Articles> query = new BmobQuery<Articles>();
+        query.order("-updatedAt");
         query.setLimit(1);
         query.findObjects(listener);
     }
@@ -46,7 +39,6 @@ public class DataUtils {
         query.count(Articles.class, new CountListener() {
             @Override
             public void done(Integer integer, BmobException e) {
-                ViseLog.d(integer);
                 int skip = utils.randomNum(0,integer);
                 query.setSkip(skip);
                 query.findObjects(listener);

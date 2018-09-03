@@ -53,4 +53,9 @@ public class AnimTool {
     public static void startAlphaOut(View v){
         v.startAnimation(AnimationUtils.loadAnimation(v.getContext(),R.anim.alpha_out));
     }
+
+    public static void startShake(View v){
+        Animation alpha = AnimationUtils.loadAnimation(v.getContext(), R.anim.shake);
+        v.startAnimation(alpha);
+    }
 }

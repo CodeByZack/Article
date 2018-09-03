@@ -1,4 +1,4 @@
-package com.zack.article.activity;
+package com.zack.article.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

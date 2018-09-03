@@ -1,8 +1,4 @@
-package com.zack.article.bean;
-
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
+package com.zack.article.Bean;
 
 import cn.bmob.v3.BmobObject;
 

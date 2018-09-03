@@ -1,14 +1,13 @@
-package com.zack.article.activity;
+package com.zack.article.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -19,13 +18,15 @@ import com.vise.log.ViseLog;
 import com.zack.article.Anim.AnimTool;
 import com.zack.article.Data.ArticleCopy;
 import com.zack.article.Data.DataBase;
-import com.zack.article.bean.Articles;
+import com.zack.article.Bean.Articles;
 import com.zack.article.Data.DataUtils;
+import com.zack.article.Event.OpenCollectArticleEvent;
 import com.zack.article.R;
-import com.zack.article.util.SPUtil;
 
-import static android.view.View.FOCUS_UP;
-import java.io.IOException;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import cn.bmob.v3.exception.BmobException;
@@ -47,12 +48,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Articles articles;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OpenCollectArticleEvent event) {
+        Articles articles = new Articles();
+        articles.setAuthor(event.articleCopy.getAuthor());
+        articles.setTitle(event.articleCopy.getTitle());
+        articles.setContent(event.articleCopy.getContent());
+        articles.setObjectId(event.articleCopy.getObjectId());
+        upDateView(articles);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
         initLogic();
         reuqestData();
+        EventBus.getDefault().register(this);
+
     }
 
     private void reuqestData() {
@@ -105,9 +124,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         content.setText(article.getContent());
         nowArticleNum = article.getContent().length();
         count.setText("全文完，共"+nowArticleNum+"字");
-        //scrollView.fullScroll(FOCUS_UP);
-        // scrollView.scrollTo(scrollView.getScrollX(),0);
         scrollView.scrollTo(0, 0);
+        checkCollect();
+    }
+
+    private void checkCollect() {
+        List<ArticleCopy> temp = DataBase.getInstance().articlesDao().getCollectById(articles.getObjectId());
+        Drawable likeDrawable = getResources().getDrawable(R.drawable.like_solid);
+        Drawable unlikeDrawable = getResources().getDrawable(R.drawable.like);
+        if(temp.size()>0){
+            like.setImageDrawable(likeDrawable);
+        }else{
+            like.setImageDrawable(unlikeDrawable);
+        }
     }
 
     private void initLogic() {
@@ -144,6 +173,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 drawerLayout.openDrawer(GravityCompat.END);
                 break;
             case R.id.like:
+                AnimTool.startShake(like);
                 ArticleCopy article = new ArticleCopy();
                 article.setObjectId(articles.getObjectId());
                 article.setAuthor(articles.getAuthor());
@@ -151,6 +181,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 article.setTitle(articles.getTitle());
                 DataBase.getInstance().articlesDao().insert(article);
                 toast("收藏成功！");
+                checkCollect();
                 break;
             case R.id.refresh:
                 reuqestRandomData();
