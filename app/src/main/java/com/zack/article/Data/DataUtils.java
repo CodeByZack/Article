@@ -2,10 +2,9 @@ package com.zack.article.Data;
 
 import android.content.Context;
 
-import com.vise.log.ViseLog;
 import com.zack.article.Bean.Articles;
 import com.zack.article.Util.SPUtil;
-import com.zack.article.utils;
+import com.zack.article.Util.Utils;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
@@ -39,7 +38,7 @@ public class DataUtils {
         query.count(Articles.class, new CountListener() {
             @Override
             public void done(Integer integer, BmobException e) {
-                int skip = utils.randomNum(0,integer);
+                int skip = Utils.randomNum(0,integer);
                 query.setSkip(skip);
                 query.findObjects(listener);
             }

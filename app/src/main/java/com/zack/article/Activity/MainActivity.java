@@ -22,6 +22,7 @@ import com.zack.article.Bean.Articles;
 import com.zack.article.Data.DataUtils;
 import com.zack.article.Event.OpenCollectArticleEvent;
 import com.zack.article.R;
+import com.zack.article.Util.ThemeConfig;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -54,6 +55,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        applyTheme();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OpenCollectArticleEvent event) {
         Articles articles = new Articles();
@@ -65,15 +72,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void applyTheme(){
-        int colorTitle = getResources().getColor(R.color.title_theme1);
-        int colorAuthor = getResources().getColor(R.color.author_theme1);
-        int colorContent = getResources().getColor(R.color.content_theme1);
-        int colorBg = getResources().getColor(R.color.bg_theme1);
-        title.setTextColor(colorTitle);
-        author.setTextColor(colorAuthor);
-        content.setTextColor(colorContent);
-        mainContainer.setBackgroundColor(colorBg);
-        bar.statusBarColor(R.color.bg_theme1).statusBarDarkFont(false).init();
+        title.setTextColor(getResources().getColor(ThemeConfig.getTitleColor()));
+        author.setTextColor(getResources().getColor(ThemeConfig.getAuthorColor()));
+        content.setTextColor(getResources().getColor(ThemeConfig.getContentColor()));
+        count.setTextColor(getResources().getColor(ThemeConfig.getContentColor()));
+        mainContainer.setBackgroundColor(getResources().getColor(ThemeConfig.getBgColor()));
+        bar.statusBarColor(ThemeConfig.getBgColor()).init();
     }
 
     @Override
@@ -84,7 +88,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initLogic();
         reuqestData();
         EventBus.getDefault().register(this);
-
     }
 
     private void reuqestData() {
@@ -202,9 +205,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 showLoadingArticle();
                 break;
             case R.id.ll_about:
-//                startActivity(new Intent(this,AboutActivity.class));
-//                drawerLayout.closeDrawer(GravityCompat.END);
-                applyTheme();
+                startActivity(new Intent(this,AboutActivity.class));
+                drawerLayout.closeDrawer(GravityCompat.END);
                 break;
             case R.id.ll_collect:
                 startActivity(new Intent(this,CollectActivity.class));

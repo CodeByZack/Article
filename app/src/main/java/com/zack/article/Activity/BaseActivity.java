@@ -19,7 +19,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void setStatusBar() {
-        bar.statusBarColor(R.color.bg_theme1).fitsSystemWindows(true).statusBarDarkFont(true,0.2f).init();
+        bar.statusBarColor(R.color.bg_light).fitsSystemWindows(true).statusBarDarkFont(true,0.2f).init();
     }
 
     @Override
