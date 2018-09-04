@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:openDrawer="right"
     android:id="@+id/drawer">
 
     <include layout="@layout/main_content"
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <LinearLayout

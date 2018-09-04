@@ -42,6 +42,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
     private ImageView refresh,like,menu;
     private LinearLayout llCollect,llSetting,llAbout;
+    private LinearLayout mainContainer;
 
     private boolean countFlag;
     private int nowArticleNum;
@@ -61,6 +62,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         articles.setContent(event.articleCopy.getContent());
         articles.setObjectId(event.articleCopy.getObjectId());
         upDateView(articles);
+    }
+
+    private void applyTheme(){
+        int colorTitle = getResources().getColor(R.color.title_theme1);
+        int colorAuthor = getResources().getColor(R.color.author_theme1);
+        int colorContent = getResources().getColor(R.color.content_theme1);
+        int colorBg = getResources().getColor(R.color.bg_theme1);
+        title.setTextColor(colorTitle);
+        author.setTextColor(colorAuthor);
+        content.setTextColor(colorContent);
+        mainContainer.setBackgroundColor(colorBg);
+        bar.statusBarColor(R.color.bg_theme1).statusBarDarkFont(false).init();
     }
 
     @Override
@@ -164,6 +177,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         llAbout = findViewById(R.id.ll_about);
         llCollect = findViewById(R.id.ll_collect);
         llSetting = findViewById(R.id.ll_setting);
+        mainContainer = findViewById(R.id.main_container);
     }
 
     @Override
@@ -188,8 +202,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 showLoadingArticle();
                 break;
             case R.id.ll_about:
-                startActivity(new Intent(this,AboutActivity.class));
-                drawerLayout.closeDrawer(GravityCompat.END);
+//                startActivity(new Intent(this,AboutActivity.class));
+//                drawerLayout.closeDrawer(GravityCompat.END);
+                applyTheme();
                 break;
             case R.id.ll_collect:
                 startActivity(new Intent(this,CollectActivity.class));

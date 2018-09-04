@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.zack.article.R;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
