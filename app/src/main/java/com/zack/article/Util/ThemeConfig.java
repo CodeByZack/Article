@@ -10,6 +10,7 @@ public class ThemeConfig {
     public static final int Theme_Default = 1;
     public static final int Theme_2 = 2;
     public static final int Theme_3 = 3;
+    public static int NowTheme = 1;
     private static int bgColor,titleColor,authorColor,contentColor;
 
     public static void init(Context context){
@@ -40,6 +41,7 @@ public class ThemeConfig {
     }
 
     private static void changeTheme(Context context, int theme) {
+        NowTheme = theme;
         switch (theme){
             case Theme_2:
                 bgColor = R.color.bg_theme1;
