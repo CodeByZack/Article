@@ -3,6 +3,7 @@ package com.zack.article.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -78,6 +79,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         count.setTextColor(getResources().getColor(ThemeConfig.getContentColor()));
         mainContainer.setBackgroundColor(getResources().getColor(ThemeConfig.getBgColor()));
         bar.statusBarColor(ThemeConfig.getBgColor()).init();
+
+
+
+//        int colors[] = { 0xffcfcfcf , 0xffffffff };
+        int colors[] = { 0xffe1e1e1 , 0xffffffff };
+        GradientDrawable bg = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
+        readedNum.setBackground(bg);
+
     }
 
     @Override
