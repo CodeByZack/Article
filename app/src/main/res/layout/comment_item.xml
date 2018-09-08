@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:paddingTop="@dimen/normal_margin"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/name"
+            android:layout_weight="1"
+            android:textSize="@dimen/text_size_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="匿名"/>
+        <TextView
+            android:id="@+id/time"
+            android:textSize="@dimen/text_size_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2018-8-10"/>
+    </LinearLayout>
+    <TextView
+        android:paddingTop="@dimen/little_margin"
+        android:paddingBottom="@dimen/little_margin"
+        android:textSize="@dimen/normal_text_size"
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="评论内容"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#55f2f2f2"></View>
+</LinearLayout>

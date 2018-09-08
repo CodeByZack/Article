@@ -5,8 +5,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,8 +18,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.vise.log.ViseLog;
 import com.zack.article.Anim.AnimTool;
+import com.zack.article.Bean.comments;
 import com.zack.article.Data.ArticleCopy;
 import com.zack.article.Data.DataBase;
 import com.zack.article.Bean.Articles;
@@ -29,6 +35,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.bmob.v3.exception.BmobException;
@@ -42,13 +49,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView count;
     private TextView readedNum;
     private DrawerLayout drawerLayout;
-    private ImageView refresh,like,menu;
+    private ImageView refresh,like,menu,comment;
     private LinearLayout llCollect,llSetting,llAbout;
-    private LinearLayout mainContainer;
+    private LinearLayout mainContainer,contextContainer,commentContainer;
+
+    private TextView commentTitle;
+    private RecyclerView commentList;
 
     private boolean countFlag;
     private int nowArticleNum;
     private Articles articles;
+
+    private CommentAdapter commentAdapter;
+    private List<comments> commentDataList = new LinkedList<>();
 
     @Override
     protected void onDestroy() {
@@ -74,6 +87,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void applyTheme(){
         title.setTextColor(getResources().getColor(ThemeConfig.getTitleColor()));
+        commentTitle.setTextColor(getResources().getColor(ThemeConfig.getTitleColor()));
         author.setTextColor(getResources().getColor(ThemeConfig.getAuthorColor()));
         content.setTextColor(getResources().getColor(ThemeConfig.getContentColor()));
 
@@ -88,6 +102,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         GradientDrawable bg = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
         readedNum.setBackground(bg);
         readedNum.setTextColor(getResources().getColor(ThemeConfig.getContentColor()));
+
+        commentAdapter.notifyDataSetChanged();
 
     }
 
@@ -147,12 +163,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         AnimTool.stopRotate(refresh);
         countFlag = false;
         title.setText(article.getTitle());
+        commentTitle.setText(article.getTitle());
         author.setText(article.getAuthor());
         content.setText(article.getContent());
         nowArticleNum = article.getContent().length();
         count.setText("全文完，共"+nowArticleNum+"字");
         scrollView.scrollTo(0, 0);
         checkCollect();
+        requestComments(article.getObjectId());
+    }
+
+    private void requestComments(String objectId) {
+        DataUtils.getCommentsByArticleId(objectId, new FindListener<comments>() {
+            @Override
+            public void done(List<comments> list, BmobException e) {
+                if(e == null){
+                    commentDataList.clear();
+                    commentDataList.addAll(list);
+                    commentAdapter.notifyDataSetChanged();
+                }else{
+                    ViseLog.d(e);
+                }
+            }
+        });
     }
 
     private void checkCollect() {
@@ -170,10 +203,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         menu.setOnClickListener(this);
         refresh.setOnClickListener(this);
         like.setOnClickListener(this);
+        comment.setOnClickListener(this);
         llSetting.setOnClickListener(this);
         llAbout.setOnClickListener(this);
         llCollect.setOnClickListener(this);
         scrollView.setOnTouchListener(new TouchListenerImpl());
+
+        commentAdapter = new CommentAdapter(R.layout.comment_item,commentDataList);
+        commentDataList.add(new comments());
+        commentDataList.add(new comments());
+        commentDataList.add(new comments());
+        commentList.setAdapter(commentAdapter);
     }
 
     private void initView() {
@@ -181,6 +221,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         author = findViewById(R.id.author);
         readedNum = findViewById(R.id.tv_readedNum);
         content = findViewById(R.id.content);
+        comment = findViewById(R.id.comment);
         drawerLayout = findViewById(R.id.drawer);
         refresh = findViewById(R.id.refresh);
         like = findViewById(R.id.like);
@@ -192,6 +233,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         llCollect = findViewById(R.id.ll_collect);
         llSetting = findViewById(R.id.ll_setting);
         mainContainer = findViewById(R.id.main_container);
+        contextContainer = findViewById(R.id.context_container);
+        commentContainer = findViewById(R.id.comment_container);
+        commentTitle = findViewById(R.id.comment_title);
+        commentList = findViewById(R.id.comment_list);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        commentList.setLayoutManager(linearLayoutManager);
+
+
     }
 
     @Override
@@ -226,6 +277,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.ll_setting:
                 startActivity(new Intent(this,SettingActivity.class));
                 drawerLayout.closeDrawer(GravityCompat.END);
+                break;
+            case R.id.comment:
+                if(commentContainer.getVisibility() == View.VISIBLE){
+                    commentContainer.setVisibility(View.GONE);
+                    contextContainer.setVisibility(View.VISIBLE);
+                    AnimTool.startAlpha(contextContainer);
+                }else{
+                    commentContainer.setVisibility(View.VISIBLE);
+                    contextContainer.setVisibility(View.GONE);
+                    AnimTool.startAlpha(commentContainer);
+                }
                 break;
         }
     }
@@ -276,4 +338,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
     };
+
+    private class CommentAdapter extends BaseQuickAdapter<comments,BaseViewHolder> {
+        public CommentAdapter(int layoutResId, @Nullable List<comments> data) {
+            super(layoutResId, data);
+        }
+
+        @Override
+        protected void convert(BaseViewHolder helper, comments item) {
+            helper.setTextColor(R.id.name,getResources().getColor(ThemeConfig.getTitleColor()));
+            helper.setTextColor(R.id.time,getResources().getColor(ThemeConfig.getAuthorColor()));
+            helper.setTextColor(R.id.content,getResources().getColor(ThemeConfig.getContentColor()));
+
+            helper.setText(R.id.time,item.getCreatedAt());
+            helper.setText(R.id.content,item.getContent());
+        }
+    }
 }

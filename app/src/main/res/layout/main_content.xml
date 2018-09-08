@@ -22,42 +22,90 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             tools:context=".Activity.MainActivity">
+            <LinearLayout
+                android:id="@+id/context_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/title"
+                    android:textSize="26sp"
+                    android:paddingTop="@dimen/little_margin"
+                    android:textColor="@color/title_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="标题"/>
+                <TextView
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:id="@+id/author"
+                    android:textColor="@color/author_light"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="作者"/>
+                <TextView
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:id="@+id/content"
+                    android:textColor="@color/content_light"
+                    android:textSize="16sp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="内容"
+                    />
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:id="@+id/count"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_micro"
+                    android:layout_width="match_parent"
+                    android:text="全文完，共100字"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/comment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/comment_title"
+                    android:textSize="26sp"
+                    android:paddingBottom="@dimen/little_margin"
+                    android:paddingTop="@dimen/little_margin"
+                    android:textColor="@color/title_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="标题"
+                    />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/comment_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                </android.support.v7.widget.RecyclerView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:textSize="@dimen/normal_text_size"
+                        android:hint="在这输入你的评论哦！"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        />
+                    <TextView
+                        android:textColor="@color/white"
+                        android:background="@color/colorAccent"
+                        android:padding="@dimen/little_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="提交"/>
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/title"
-                android:textSize="26sp"
-                android:paddingTop="@dimen/little_margin"
-                android:textColor="@color/title_light"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="标题"/>
-            <TextView
-                android:layout_marginTop="@dimen/normal_margin"
-                android:id="@+id/author"
-                android:textColor="@color/author_light"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="作者"/>
-            <TextView
-                android:layout_marginTop="@dimen/normal_margin"
-                android:id="@+id/content"
-                android:textColor="@color/content_light"
-                android:textSize="16sp"
-                android:lineSpacingMultiplier="1.5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="内容"
-                />
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:id="@+id/count"
-                android:gravity="center"
-                android:textSize="@dimen/text_size_micro"
-                android:layout_width="match_parent"
-                android:text="全文完，共100字"
-                android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <LinearLayout
@@ -79,6 +127,12 @@
             android:layout_margin="@dimen/little_margin"
             android:layout_height="24dp"
             android:src="@drawable/like"/>
+        <ImageView
+            android:id="@+id/comment"
+            android:layout_width="24dp"
+            android:layout_margin="@dimen/little_margin"
+            android:layout_height="24dp"
+            android:src="@drawable/comment"/>
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"

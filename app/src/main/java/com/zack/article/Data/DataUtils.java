@@ -3,6 +3,7 @@ package com.zack.article.Data;
 import android.content.Context;
 
 import com.zack.article.Bean.Articles;
+import com.zack.article.Bean.comments;
 import com.zack.article.Util.SPUtil;
 import com.zack.article.Util.Utils;
 
@@ -55,4 +56,10 @@ public class DataUtils {
         });
     }
 
+    public static void getCommentsByArticleId(String articleId,FindListener listener){
+        BmobQuery<comments> query = new BmobQuery<comments>();
+        query.order("-updatedAt");
+        query.addWhereEqualTo("articleId",articleId);
+        query.findObjects(listener);
+    }
 }
