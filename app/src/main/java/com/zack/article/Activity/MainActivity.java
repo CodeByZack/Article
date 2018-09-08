@@ -76,16 +76,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         title.setTextColor(getResources().getColor(ThemeConfig.getTitleColor()));
         author.setTextColor(getResources().getColor(ThemeConfig.getAuthorColor()));
         content.setTextColor(getResources().getColor(ThemeConfig.getContentColor()));
+
+        title.setTextSize(ThemeConfig.getTitleSize());
+        author.setTextSize(ThemeConfig.getAuthorSize());
+        content.setTextSize(ThemeConfig.getContentSize());
+
         count.setTextColor(getResources().getColor(ThemeConfig.getContentColor()));
         mainContainer.setBackgroundColor(getResources().getColor(ThemeConfig.getBgColor()));
         bar.statusBarColor(ThemeConfig.getBgColor()).init();
-
-
-
-//        int colors[] = { 0xffcfcfcf , 0xffffffff };
-        int colors[] = { 0xffe1e1e1 , 0xffffffff };
+        int colors[] = { ThemeConfig.getLeftStartColor(),ThemeConfig.getLeftEndColor()};
         GradientDrawable bg = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors);
         readedNum.setBackground(bg);
+        readedNum.setTextColor(getResources().getColor(ThemeConfig.getContentColor()));
 
     }
 

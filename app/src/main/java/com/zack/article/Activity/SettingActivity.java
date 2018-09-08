@@ -12,8 +12,9 @@ import com.zack.article.Util.ThemeConfig;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
     private Toolbar toolbar;
-    private TextView theme1,theme2;
-    private SeekBar seekBar;
+    private TextView theme1,theme2,tvTitle,tvAuthor,tvContent;
+    private SeekBar sbTitle,sbAuthor,sbContent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +33,45 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         theme2.setOnClickListener(this);
         theme1.setOnClickListener(this);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        sbAuthor.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvAuthor.setText("作者字体:"+progress);
+                ThemeConfig.setAuthorSize(progress,SettingActivity.this);
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        sbTitle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvTitle.setText("标题字体:"+progress);
+                ThemeConfig.setTitleSize(progress,SettingActivity.this);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        sbContent.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvContent.setText("文章内容字体:"+progress);
+                ThemeConfig.setContentSize(progress,SettingActivity.this);
             }
 
             @Override
@@ -56,7 +92,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         toolbar = findViewById(R.id.toolbar);
         theme1 = findViewById(R.id.theme1);
         theme2 = findViewById(R.id.theme2);
-        seekBar = findViewById(R.id.seek_size);
+        tvAuthor = findViewById(R.id.tv_author);
+        tvContent = findViewById(R.id.tv_content);
+        tvTitle = findViewById(R.id.tv_title);
+        sbAuthor = findViewById(R.id.sb_author);
+        sbTitle = findViewById(R.id.sb_title);
+        sbContent = findViewById(R.id.sb_content);
     }
 
 
@@ -73,15 +114,24 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void changTheme(int theme){
-        theme1.setText("行");
-        theme2.setText("者");
+        theme1.setText("白色");
+        theme2.setText("黑色");
+
+        tvTitle.setText("标题字体:"+ThemeConfig.getTitleSize());
+        tvContent.setText("文章内容字体:"+ThemeConfig.getContentSize());
+        tvAuthor.setText("作者字体:"+ThemeConfig.getAuthorSize());
+
+        sbContent.setProgress(ThemeConfig.getContentSize());
+        sbTitle.setProgress(ThemeConfig.getTitleSize());
+        sbAuthor.setProgress(ThemeConfig.getAuthorSize());
+
         switch (theme){
             case ThemeConfig.Theme_Default:
                 ThemeConfig.change(this,ThemeConfig.Theme_Default);
-                theme1.setText("行（正在使用）");
+                theme1.setText("白色（正在使用）");
                 break;
             case ThemeConfig.Theme_2:
-                theme2.setText("者（正在使用）");
+                theme2.setText("黑色（正在使用）");
                 ThemeConfig.change(this,ThemeConfig.Theme_2);
                 break;
         }

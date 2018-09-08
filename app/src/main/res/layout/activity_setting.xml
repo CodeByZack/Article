@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="选择配色"
+        android:textSize="@dimen/normal_text_size"
         android:textColor="@color/textPrimary"/>
     <LinearLayout
         android:paddingLeft="@dimen/normal_margin"
@@ -30,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="行（正在使用）"
+            android:text="白色（正在使用）"
             android:gravity="center"
             android:paddingTop="@dimen/normal_margin"
             android:paddingBottom="@dimen/normal_margin"
@@ -43,23 +44,82 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="者"
+            android:text="黑色"
             android:paddingTop="@dimen/normal_margin"
             android:paddingBottom="@dimen/normal_margin"
             android:textColor="@color/content_theme1"
             android:background="@color/bg_theme1"
             android:layout_marginRight="@dimen/little_margin"/>
     </LinearLayout>
-    <TextView
-        android:padding="@dimen/normal_margin"
+    <LinearLayout
+        android:layout_marginTop="@dimen/normal_margin"
+        android:paddingLeft="@dimen/little_margin"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="字体大小(50)"
-        android:textColor="@color/textPrimary"/>
-    <SeekBar
-        android:id="@+id/seek_size"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="@dimen/little_margin"
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_medium"
+            android:text="标题字体:26"
+            android:textColor="@color/textPrimary"/>
+        <SeekBar
+            android:id="@+id/sb_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:min="1"
+            android:progress="26"
+            android:max="30"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/little_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/normal_margin"
-        android:paddingRight="@dimen/normal_margin"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_author"
+            android:padding="@dimen/little_margin"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_medium"
+            android:text="作者字体:14"
+            android:textColor="@color/textPrimary"/>
+        <SeekBar
+            android:id="@+id/sb_author"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:min="1"
+            android:progress="14"
+            android:max="30"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/little_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_content"
+            android:padding="@dimen/little_margin"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_medium"
+            android:text="文章内容字体:16"
+            android:textColor="@color/textPrimary"/>
+        <SeekBar
+            android:id="@+id/sb_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:progress="16"
+            android:min="1"
+            android:max="30"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </LinearLayout>

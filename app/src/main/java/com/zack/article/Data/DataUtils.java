@@ -17,6 +17,7 @@ import cn.bmob.v3.listener.FindListener;
 
 public class DataUtils {
     public static final String ReadedNum = "ReadedNum";
+    public static final String ReadedArticleCount = "ReadedArticleCount";
 
     public static void updateReadNum(int num, Context context){
         int oldNum = (int) SPUtil.getData(context,ReadedNum,0);
@@ -25,6 +26,15 @@ public class DataUtils {
     }
     public static int getRededNum(Context context){
         return (int) SPUtil.getData(context,ReadedNum,0);
+    }
+
+    public static void updateReadArticleCount(int num, Context context){
+        int oldNum = (int) SPUtil.getData(context,ReadedArticleCount,0);
+        int newNum = oldNum + num;
+        SPUtil.saveDate(context,ReadedArticleCount,newNum);
+    }
+    public static int getRededArticleCount(Context context){
+        return (int) SPUtil.getData(context,ReadedArticleCount,0);
     }
     public static void getTodayArticle(FindListener listener){
         BmobQuery<Articles> query = new BmobQuery<Articles>();
