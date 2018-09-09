@@ -1,9 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="#FFFFFF" />
-    <corners android:radius="1dip"/>
-    <stroke
-        android:width="1dip"
-        android:color="#BDC7D8" />
-</shape>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- This is the line -->
+    <!-- left 和right是左右边距 -->
+    <item
+        android:left="1dp"
+        android:right="1dp">
+        <shape>
+        </shape>
+    </item>
+    <!--bottom是横线高度 -->
+    <item android:bottom="1px">
+        <shape>
+            <solid android:color="@color/white_A80" />
+        </shape>
+    </item>
+
+</layer-list>

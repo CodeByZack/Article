@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+
+<LinearLayout android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:paddingTop="@dimen/normal_margin"
         android:layout_width="match_parent"
@@ -33,5 +34,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#55f2f2f2"></View>
+        android:background="#e7e7e9"/>
 </LinearLayout>

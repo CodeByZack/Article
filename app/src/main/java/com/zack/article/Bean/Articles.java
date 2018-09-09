@@ -1,11 +1,13 @@
 package com.zack.article.Bean;
 
+import java.io.Serializable;
+
 import cn.bmob.v3.BmobObject;
 
 /**
  * Created by Zackv on 2017/10/8.
  */
-public class Articles extends BmobObject{
+public class Articles  extends BmobObject implements Serializable{
     private String author;
     private String title;
     private String content;

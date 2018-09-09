@@ -52,17 +52,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
     private ImageView refresh,like,menu,comment;
     private LinearLayout llCollect,llSetting,llAbout;
-    private LinearLayout mainContainer,contextContainer,commentContainer;
-
-    private TextView commentTitle;
-    private RecyclerView commentList;
+    private LinearLayout mainContainer,contextContainer;
 
     private boolean countFlag;
     private int nowArticleNum;
     private Articles articles;
-
-    private CommentAdapter commentAdapter;
-    private List<comments> commentDataList = new LinkedList<>();
 
     @Override
     protected void onDestroy() {
@@ -88,7 +82,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void applyTheme(){
         title.setTextColor(getResources().getColor(ThemeConfig.getTitleColor()));
-        commentTitle.setTextColor(getResources().getColor(ThemeConfig.getTitleColor()));
         author.setTextColor(getResources().getColor(ThemeConfig.getAuthorColor()));
         content.setTextColor(getResources().getColor(ThemeConfig.getContentColor()));
 
@@ -104,7 +97,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         readedNum.setBackground(bg);
         readedNum.setTextColor(getResources().getColor(ThemeConfig.getContentColor()));
 
-        commentAdapter.notifyDataSetChanged();
 
     }
 
@@ -164,30 +156,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         AnimTool.stopRotate(refresh);
         countFlag = false;
         title.setText(article.getTitle());
-        commentTitle.setText(article.getTitle());
         author.setText(article.getAuthor());
         content.setText(article.getContent());
         nowArticleNum = article.getContent().length();
         count.setText("全文完，共"+nowArticleNum+"字");
         scrollView.scrollTo(0, 0);
         checkCollect();
-        requestComments(article.getObjectId());
     }
 
-    private void requestComments(String objectId) {
-        DataUtils.getCommentsByArticleId(objectId, new FindListener<comments>() {
-            @Override
-            public void done(List<comments> list, BmobException e) {
-                if(e == null){
-                    commentDataList.clear();
-                    commentDataList.addAll(list);
-                    commentAdapter.notifyDataSetChanged();
-                }else{
-                    ViseLog.d(e);
-                }
-            }
-        });
-    }
+
 
     private void checkCollect() {
         List<ArticleCopy> temp = DataBase.getInstance().articlesDao().getCollectById(articles.getObjectId());
@@ -209,9 +186,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         llAbout.setOnClickListener(this);
         llCollect.setOnClickListener(this);
         scrollView.setOnTouchListener(new TouchListenerImpl());
-
-        commentAdapter = new CommentAdapter(R.layout.comment_item,commentDataList);
-        commentList.setAdapter(commentAdapter);
     }
 
     private void initView() {
@@ -226,20 +200,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         menu = findViewById(R.id.menu);
         count = findViewById(R.id.count);
         scrollView = findViewById(R.id.scrollView);
-        readedNum.setText("你已阅读"+DataUtils.getRededNum(MainActivity.this)+"字");
+        readedNum.setText("你已阅读"+DataUtils.getRededArticleCount(MainActivity.this)+"篇文章\n共计"+DataUtils.getRededNum(MainActivity.this)+"字");
         llAbout = findViewById(R.id.ll_about);
         llCollect = findViewById(R.id.ll_collect);
         llSetting = findViewById(R.id.ll_setting);
         mainContainer = findViewById(R.id.main_container);
         contextContainer = findViewById(R.id.context_container);
-        commentContainer = findViewById(R.id.comment_container);
-        commentTitle = findViewById(R.id.comment_title);
-        commentList = findViewById(R.id.comment_list);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        commentList.setLayoutManager(linearLayoutManager);
-        commentList.setNestedScrollingEnabled(false);
 
     }
 
@@ -277,16 +244,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
             case R.id.comment:
-                if(commentContainer.getVisibility() == View.VISIBLE){
-                    commentContainer.setVisibility(View.GONE);
-                    contextContainer.setVisibility(View.VISIBLE);
-                    AnimTool.startAlpha(contextContainer);
-                }else{
-                    commentContainer.setVisibility(View.VISIBLE);
-                    contextContainer.setVisibility(View.GONE);
-                    AnimTool.startAlpha(commentContainer);
-                }
-                scrollView.scrollTo(0, 0);
+                startActivity(new Intent(this,CommentActivity.class).putExtra("articleId",articles));
                 break;
         }
     }
@@ -326,7 +284,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         ViseLog.d("滑动到底部事件！"+localVisibility);
                         countFlag = true;
                         DataUtils.updateReadNum(nowArticleNum,MainActivity.this);
-                        readedNum.setText("你已阅读"+DataUtils.getRededNum(MainActivity.this)+"字");
+                        DataUtils.updateReadArticleCount(1,MainActivity.this);
+                        readedNum.setText("你已阅读"+DataUtils.getRededArticleCount(MainActivity.this)+"篇文章\n共计"+DataUtils.getRededNum(MainActivity.this)+"字");
                     }
                     break;
 
@@ -338,19 +297,4 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     };
 
-    private class CommentAdapter extends BaseQuickAdapter<comments,BaseViewHolder> {
-        public CommentAdapter(int layoutResId, @Nullable List<comments> data) {
-            super(layoutResId, data);
-        }
-
-        @Override
-        protected void convert(BaseViewHolder helper, comments item) {
-            helper.setTextColor(R.id.name,getResources().getColor(ThemeConfig.getTitleColor()));
-            helper.setTextColor(R.id.time,getResources().getColor(ThemeConfig.getAuthorColor()));
-            helper.setTextColor(R.id.content,getResources().getColor(ThemeConfig.getContentColor()));
-
-            helper.setText(R.id.time,item.getCreatedAt());
-            helper.setText(R.id.content,item.getContent());
-        }
-    }
 }

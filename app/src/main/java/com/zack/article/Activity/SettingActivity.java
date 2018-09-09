@@ -8,6 +8,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.zack.article.R;
+import com.zack.article.Util.AndroidBug5497Workaround;
 import com.zack.article.Util.ThemeConfig;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {

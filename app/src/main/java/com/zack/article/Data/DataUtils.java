@@ -11,6 +11,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by Zackv on 2017/10/8.
@@ -61,5 +62,9 @@ public class DataUtils {
         query.order("-updatedAt");
         query.addWhereEqualTo("articleId",articleId);
         query.findObjects(listener);
+    }
+
+    public static void submitComment(comments c, SaveListener listener){
+        c.save(listener);
     }
 }

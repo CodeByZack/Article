@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/ll_bg"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".Activity.CommentActivity">
+    <android.support.v7.widget.Toolbar
+        app:navigationIcon="@drawable/ic_arrow_back_gray"
+        app:title="评论列表"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+    </android.support.v7.widget.Toolbar>
+    <android.support.v7.widget.RecyclerView
+        android:paddingLeft="@dimen/normal_margin"
+        android:paddingRight="@dimen/normal_margin"
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+
+        android:overScrollMode="never"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:background="#eeffffff"
+        android:paddingLeft="@dimen/normal_margin"
+        android:paddingRight="@dimen/normal_margin"
+        android:paddingTop="@dimen/little_margin"
+        android:paddingBottom="@dimen/mini_margin"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/input_cpmment"
+            android:hint="在这输入你的评论"
+            android:layout_width="0dp"
+            android:background="@null"
+            android:textSize="@dimen/text_size_medium"
+            android:layout_weight="1"
+            android:textColor="@color/textPrimary"
+            android:padding="@dimen/little_margin"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_submit"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:gravity="center"
+            android:textColor="@color/textAssistSecondary"
+            android:textSize="@dimen/text_size_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:enabled="false"
+            android:text="提交"/>
+    </LinearLayout>
+
+</LinearLayout>
