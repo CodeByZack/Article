@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#9e9e9e</color>
 
     <!--文字颜色-->
     <color name="textPrimary">#212121</color><!--用于重要级文字信息，如标题，子模块功能文字等-->

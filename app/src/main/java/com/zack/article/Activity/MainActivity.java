@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
@@ -210,9 +211,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         scrollView.setOnTouchListener(new TouchListenerImpl());
 
         commentAdapter = new CommentAdapter(R.layout.comment_item,commentDataList);
-        commentDataList.add(new comments());
-        commentDataList.add(new comments());
-        commentDataList.add(new comments());
         commentList.setAdapter(commentAdapter);
     }
 
@@ -241,7 +239,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         commentList.setLayoutManager(linearLayoutManager);
-
+        commentList.setNestedScrollingEnabled(false);
 
     }
 
@@ -288,6 +286,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     contextContainer.setVisibility(View.GONE);
                     AnimTool.startAlpha(commentContainer);
                 }
+                scrollView.scrollTo(0, 0);
                 break;
         }
     }
