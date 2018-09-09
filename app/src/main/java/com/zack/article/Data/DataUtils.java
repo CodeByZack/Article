@@ -40,7 +40,7 @@ public class DataUtils {
     }
     public static void getTodayArticle(FindListener listener){
         BmobQuery<Articles> query = new BmobQuery<Articles>();
-        query.order("-updatedAt");
+        query.order("-createdAt");
         query.setLimit(1);
         query.findObjects(listener);
     }
