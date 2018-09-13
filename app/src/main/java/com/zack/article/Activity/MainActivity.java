@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,20 +23,25 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.vise.log.ViseLog;
+import com.zack.appupdate.AppUpdate;
 import com.zack.article.Anim.AnimTool;
+import com.zack.article.Bean.UpdateInfo;
 import com.zack.article.Bean.comments;
 import com.zack.article.Data.ArticleCopy;
 import com.zack.article.Data.DataBase;
 import com.zack.article.Bean.Articles;
 import com.zack.article.Data.DataUtils;
+import com.zack.article.Data.UpdateCallBack;
 import com.zack.article.Event.OpenCollectArticleEvent;
 import com.zack.article.R;
+import com.zack.article.Util.PackageUtil;
 import com.zack.article.Util.ThemeConfig;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,6 +63,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private boolean countFlag;
     private int nowArticleNum;
     private Articles articles;
+    private AppUpdate appupdate;
 
     @Override
     protected void onDestroy() {
@@ -111,20 +118,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void reuqestData() {
-//        new Thread(){
-//            @Override
-//            public void run() {
-//                super.run();
-//                final Articles articleBean = DataUtils.getArticleRandom();
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        upDateView(articleBean);
-//                    }
-//                });
-//            }
-//        }.start();
-
         DataUtils.getTodayArticle(new FindListener<Articles>() {
             @Override
             public void done(List<Articles> list, BmobException e) {
@@ -132,6 +125,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     upDateView(list.get(0));
                 }else{
                     ViseLog.d(e);
+                }
+            }
+        });
+        DataUtils.getUpdateInfo(new UpdateCallBack() {
+            @Override
+            public void onResponse(UpdateInfo updateInfo) {
+                if(updateInfo.getApp_version()> PackageUtil.packageCode(MainActivity.this)){
+                    showUpdateDilog(updateInfo);
                 }
             }
         });
@@ -247,6 +248,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(this,CommentActivity.class).putExtra("articleId",articles));
                 break;
         }
+    }
+
+    private void showUpdateDilog(UpdateInfo updateInfo) {
+        String dirFilePath = "";
+        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+            //SD卡有用
+            dirFilePath = getExternalFilesDir("apk/test.apk").getAbsolutePath();
+        }else{
+            //SD卡没有用
+            dirFilePath = getFilesDir()+ File.separator+"apk/test.apk";
+        }
+        appupdate = AppUpdate.init(this)
+                .setDownloadUrl(updateInfo.getDownload_url())
+                .setSavePath(dirFilePath);
+        appupdate.showUpdateDialog("检查到有更新！",updateInfo.getApp_updateInfo(),null);
     }
 
     private void showLoadingArticle(){

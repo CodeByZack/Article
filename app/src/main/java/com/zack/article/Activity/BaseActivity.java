@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.analytics.MobclickAgent;
 import com.zack.article.R;
 
 public class BaseActivity extends AppCompatActivity {
@@ -16,6 +17,18 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         bar = ImmersionBar.with(this);
         setStatusBar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private void setStatusBar() {

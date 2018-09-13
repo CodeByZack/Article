@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 import com.vise.log.ViseLog;
 import com.vise.log.inner.LogcatTree;
 import com.zack.article.Util.ThemeConfig;
@@ -17,10 +19,20 @@ public class App extends Application {
         super.onCreate();
         context = this;
         initLog();
+        initUM();
         ThemeConfig.init(this);
         Bmob.initialize(this, "818f8d7565f7588990922e937dd3e7c8");
     }
 
+
+    private void initUM() {
+        UMConfigure.init(this, "5b9a4c52f43e483819000260", "default", UMConfigure.DEVICE_TYPE_PHONE, "");
+        if(BuildConfig.DEBUG){
+            UMConfigure.setLogEnabled(true);
+        }
+        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_DUM_NORMAL);
+        //MobclickAgent.openActivityDurationTrack(false);
+    }
     private void initLog() {
         ViseLog.getLogConfig()
                 .configAllowLog(true)//是否输出日志
