@@ -25,7 +25,7 @@
         android:layout_marginBottom="@dimen/normal_margin"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="@color/textPrimary"
+        android:textColor="@color/textSecondary"
         android:textSize="@dimen/text_size_small"
         android:text="我用二月加三月等不来一场雨，却等来了你..."/>
     <android.support.v7.widget.CardView
@@ -43,14 +43,21 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/textSecondary"
                 android:textSize="@dimen/text_size_small"
-                android:text="一个简单的阅读软件，鉴于水平有限，审美有限，欢迎吐槽！"/>
+                android:text="一个简单的阅读软件，鉴于水平有限，欢迎随时吐槽！"/>
             <TextView
                 android:layout_marginTop="@dimen/little_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textSecondary"
                 android:textSize="@dimen/text_size_small"
-                android:text="文章每日不定时更新，均由人工筛选,如果你不错的文章想分享，或者有兴趣加入，可以通过下方的联系方式取得联系..."/>
+                android:text="如果你喜欢PC端阅读，可访问：emptymountain.netlify.com"/>
+            <TextView
+                android:layout_marginTop="@dimen/little_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textSecondary"
+                android:textSize="@dimen/text_size_small"
+                android:text="文章每日不定时更新，均由人工筛选,如果你不错的文章想分享，可以通过下方的联系方式联系..."/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView

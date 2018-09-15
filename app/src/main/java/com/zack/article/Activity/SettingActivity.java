@@ -13,7 +13,7 @@ import com.zack.article.Util.ThemeConfig;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
     private Toolbar toolbar;
-    private TextView theme1,theme2,tvTitle,tvAuthor,tvContent;
+    private TextView theme1,theme2,tvTitle,tvAuthor,tvContent,Reset;
     private SeekBar sbTitle,sbAuthor,sbContent;
 
     @Override
@@ -34,6 +34,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         theme2.setOnClickListener(this);
         theme1.setOnClickListener(this);
+        Reset.setOnClickListener(this);
         sbAuthor.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -99,6 +100,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         sbAuthor = findViewById(R.id.sb_author);
         sbTitle = findViewById(R.id.sb_title);
         sbContent = findViewById(R.id.sb_content);
+        Reset = findViewById(R.id.reset);
     }
 
 
@@ -111,7 +113,26 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.theme2:
                 changTheme(ThemeConfig.Theme_2);
                 break;
+            case R.id.reset:
+                reset();
+                break;
         }
+    }
+
+    private void reset() {
+        changTheme(ThemeConfig.Theme_Default);
+
+        tvTitle.setText("标题字体:"+26);
+        sbTitle.setProgress(26);
+        ThemeConfig.setTitleSize(26,SettingActivity.this);
+
+        tvAuthor.setText("作者字体:"+14);
+        sbAuthor.setProgress(14);
+        ThemeConfig.setAuthorSize(14,SettingActivity.this);
+
+        tvContent.setText("文章内容字体:"+16);
+        sbContent.setProgress(16);
+        ThemeConfig.setContentSize(16,SettingActivity.this);
     }
 
     private void changTheme(int theme){

@@ -51,8 +51,14 @@
             android:background="@color/bg_theme1"
             android:layout_marginRight="@dimen/little_margin"/>
     </LinearLayout>
+    <TextView
+        android:padding="@dimen/normal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="字体大小"
+        android:textSize="@dimen/normal_text_size"
+        android:textColor="@color/textPrimary"/>
     <LinearLayout
-        android:layout_marginTop="@dimen/normal_margin"
         android:paddingLeft="@dimen/little_margin"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -122,4 +128,11 @@
             android:max="30"
             android:layout_height="match_parent" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/reset"
+        android:layout_marginTop="@dimen/little_margin"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="恢复默认设置"/>
 </LinearLayout>
